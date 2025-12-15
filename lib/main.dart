@@ -4,6 +4,7 @@ import 'widgets/header_section.dart';
 import 'widgets/hero_section.dart';
 import 'widgets/featured_products_section.dart';
 import 'widgets/footer_section.dart';
+import 'pages/about_us_page.dart';
 
 void main() {
   runApp(const UnionShopApp());
@@ -22,7 +23,10 @@ class UnionShopApp extends StatelessWidget {
       ),
       home: const HomeScreen(),
       initialRoute: '/',
-      routes: {'/product': (context) => const ProductPage()},
+      routes: {
+        '/product': (context) => const ProductPage(),
+        '/about': (context) => const AboutUsPage(),
+      },
     );
   }
 }

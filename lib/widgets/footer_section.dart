@@ -9,9 +9,21 @@ class FooterSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       color: Colors.grey[50],
-      child: const Text(
-        'Placeholder Footer',
-        style: TextStyle(color: Colors.grey),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Placeholder Footer',
+            style: TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/about');
+            },
+            child: const Text('About Us'),
+          ),
+        ],
       ),
     );
   }
