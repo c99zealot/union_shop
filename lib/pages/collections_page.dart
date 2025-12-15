@@ -63,12 +63,7 @@ class CollectionsPage extends StatelessWidget {
                     const SizedBox(height: 12),
                     TextButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content:
-                                Text('Collection page not implemented yet'),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/collection');
                       },
                       child: const Text('View Collection'),
                     ),
