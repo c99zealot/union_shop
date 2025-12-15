@@ -27,11 +27,11 @@ class HeaderSection extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 children: [
-                  Image.network(
-                    'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
-                    height: 18,
+                  Image.asset(
+                    'images/union_logo.png',
+                    height: 32,
                     errorBuilder: (_, __, ___) {
-                      return const Icon(Icons.image_not_supported, size: 18);
+                      return const Icon(Icons.image_not_supported, size: 32);
                     },
                   ),
                   const Spacer(),

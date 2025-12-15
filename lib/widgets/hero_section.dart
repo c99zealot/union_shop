@@ -11,11 +11,33 @@ class HeroSection extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: Image.network(
-              'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
+            child: Image.asset(
+              'images/spinnaker.png',
               fit: BoxFit.cover,
+              alignment: Alignment.center,
+              gaplessPlayback: true,
+              filterQuality: FilterQuality.medium,
+              errorBuilder: (_, __, ___) {
+                return Container(
+                  color: Colors.black,
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.image_not_supported,
+                    color: Colors.white,
+                  ),
+                );
+              },
+              frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                if (wasSynchronouslyLoaded) return child;
+                return AnimatedOpacity(
+                  opacity: frame == null ? 0 : 1,
+                  duration: const Duration(milliseconds: 150),
+                  child: child,
+                );
+              },
             ),
           ),
+
           Positioned.fill(
             child: Container(color: Colors.black.withOpacity(0.7)),
           ),

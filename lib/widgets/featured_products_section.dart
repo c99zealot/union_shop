@@ -11,26 +11,22 @@ class FeaturedProductsSection extends StatelessWidget {
       {
         'title': 'Placeholder Product 1',
         'price': '£10.00',
-        'image':
-            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        'image': 'images/portsmouth_hoodie.png',
       },
       {
         'title': 'Placeholder Product 2',
         'price': '£15.00',
-        'image':
-            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        'image': 'images/portsmouth_hoodie.png',
       },
       {
         'title': 'Placeholder Product 3',
         'price': '£20.00',
-        'image':
-            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        'image': 'images/portsmouth_hoodie.png',
       },
       {
         'title': 'Placeholder Product 4',
         'price': '£25.00',
-        'image':
-            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+        'image': 'images/portsmouth_hoodie.png',
       },
     ];
 
@@ -54,7 +50,7 @@ class FeaturedProductsSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Image.network(
+                    child: Image.asset(
                       product['image']!,
                       fit: BoxFit.cover,
                       width: double.infinity,

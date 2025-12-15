@@ -10,11 +10,11 @@ void main() {
 
       // Check that basic UI elements are present
       expect(
-        find.text('PLACEHOLDER HEADER TEXT - STUDENTS TO UPDATE!'),
+        find.text('Lorem Ipsum'),
         findsOneWidget,
       );
       expect(find.text('Placeholder Hero Title'), findsOneWidget);
-      expect(find.text('PLACEHOLDER PRODUCTS SECTION'), findsOneWidget);
+      expect(find.text('PRODUCTS'), findsOneWidget);
       expect(find.text('BROWSE PRODUCTS'), findsOneWidget);
       expect(find.text('VIEW ALL PRODUCTS'), findsOneWidget);
     });
