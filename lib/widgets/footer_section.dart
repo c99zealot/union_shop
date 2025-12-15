@@ -46,6 +46,13 @@ class FooterSection extends StatelessWidget {
             onPressed: () => _placeholderLink(context),
             child: const Text('Terms & Conditions'),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/collections');
+            },
+            child: const Text('Collections'),
+          ),
+
 
           const SizedBox(height: 16),
           const Divider(),
