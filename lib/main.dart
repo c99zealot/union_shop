@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/product_page.dart';
-import 'widgets/header_section.dart';
-import 'widgets/hero_section.dart';
-import 'widgets/featured_products_section.dart';
-import 'widgets/footer_section.dart';
 import 'pages/about_us_page.dart';
+import 'pages/home_page.dart';
 
 void main() {
   runApp(const UnionShopApp());
@@ -21,44 +18,12 @@ class UnionShopApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4d2963)),
       ),
-      home: const HomeScreen(),
+      home: const HomePage(),
       initialRoute: '/',
       routes: {
         '/product': (context) => const ProductPage(),
         '/about': (context) => const AboutUsPage(),
       },
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  void navigateToHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-  }
-
-  void navigateToProduct(BuildContext context) {
-    Navigator.pushNamed(context, '/product');
-  }
-
-  void placeholderCallbackForButtons() {
-    // This is the event handler for buttons that don't work yet
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            HeaderSection(),
-            HeroSection(),
-            FeaturedProductsSection(),
-            FooterSection(),
-          ],
-        ),
-      ),
     );
   }
 }
