@@ -9,7 +9,15 @@ class CollectionsPage extends StatefulWidget {
 }
 
 class _CollectionsPageState extends State<CollectionsPage> {
+  // Sorting
   String sortOrder = 'A–Z';
+
+  // Filtering
+  bool showSaleOnly = false;
+
+  // Pagination
+  static const int pageSize = 8;
+  int currentPage = 0;
 
   final List<Collection> allCollections = [
     Collection(
@@ -29,66 +37,164 @@ class _CollectionsPageState extends State<CollectionsPage> {
       description: 'Discounted products and offers',
       isSale: true,
     ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler',
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler Sale',
+      isSale: true,
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler',
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler',
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler Sale',
+      isSale: true,
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler',
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler Sale',
+      isSale: true,
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler',
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler Sale',
+      isSale: true,
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler',
+    ),
+    Collection(
+      title: 'Filler',
+      description: 'Filler',
+    ),
+    Collection(
+      title: 'Filler Sale',
+      description: 'Filler',
+      isSale: true,
+    ),
   ];
 
-  List<Collection> get sortedCollections {
-    final collections = List<Collection>.from(allCollections);
+  void resetPagination() {
+    currentPage = 0;
+  }
+
+  List<Collection> get processedCollections {
+    List<Collection> collections = List.from(allCollections);
+
+    if (showSaleOnly) {
+      collections = collections.where((c) => c.isSale).toList();
+    }
 
     if (sortOrder == 'A–Z') {
       collections.sort((a, b) => a.title.compareTo(b.title));
-    } else if (sortOrder == 'Z–A') {
+    } else {
       collections.sort((a, b) => b.title.compareTo(a.title));
     }
 
     return collections;
   }
 
+  /// PAGINATION
+  List<Collection> get paginatedCollections {
+    final start = currentPage * pageSize;
+    final end = start + pageSize;
+
+    if (start >= processedCollections.length) return [];
+
+    return processedCollections.sublist(
+      start,
+      end > processedCollections.length
+          ? processedCollections.length
+          : end,
+    );
+  }
+
+  int get totalPages =>
+      (processedCollections.length / pageSize).ceil().clamp(1, 999);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          // Sort control
+          // Controls
           Padding(
             padding: const EdgeInsets.all(16),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Sort:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 12),
-                DropdownButton<String>(
-                  value: sortOrder,
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'A–Z',
-                      child: Text('A–Z'),
+                // Sort dropdown
+                Row(
+                  children: [
+                    const Text(
+                      'Sort:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    DropdownMenuItem(
-                      value: 'Z–A',
-                      child: Text('Z–A'),
+                    const SizedBox(width: 12),
+                    DropdownButton<String>(
+                      value: sortOrder,
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'A–Z',
+                          child: Text('A–Z'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Z–A',
+                          child: Text('Z–A'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        if (value == null) return;
+                        setState(() {
+                          sortOrder = value;
+                          resetPagination();
+                        });
+                      },
                     ),
                   ],
+                ),
+
+                // Filter checkbox (NO extra text)
+                CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Show sale collections only'),
+                  value: showSaleOnly,
                   onChanged: (value) {
-                    if (value != null) {
-                      setState(() {
-                        sortOrder = value;
-                      });
-                    }
+                    setState(() {
+                      showSaleOnly = value ?? false;
+                      resetPagination();
+                    });
                   },
                 ),
               ],
             ),
           ),
 
-          // Collections list
+          // Collection list
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: sortedCollections.length,
+              itemCount: paginatedCollections.length,
               itemBuilder: (context, index) {
-                final collection = sortedCollections[index];
+                final collection = paginatedCollections[index];
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),
@@ -120,7 +226,8 @@ class _CollectionsPageState extends State<CollectionsPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                        'Collection page not implemented yet'),
+                                      'Collection page not implemented yet',
+                                    ),
                                   ),
                                 );
                               }
@@ -133,6 +240,39 @@ class _CollectionsPageState extends State<CollectionsPage> {
                   ),
                 );
               },
+            ),
+          ),
+
+          // Pagination controls
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: currentPage > 0
+                      ? () {
+                          setState(() {
+                            currentPage--;
+                          });
+                        }
+                      : null,
+                  child: const Text('Previous'),
+                ),
+                const SizedBox(width: 16),
+                Text('Page ${currentPage + 1} of $totalPages'),
+                const SizedBox(width: 16),
+                TextButton(
+                  onPressed: currentPage < totalPages - 1
+                      ? () {
+                          setState(() {
+                            currentPage++;
+                          });
+                        }
+                      : null,
+                  child: const Text('Next'),
+                ),
+              ],
             ),
           ),
         ],
