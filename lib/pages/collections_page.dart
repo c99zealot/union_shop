@@ -16,7 +16,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
   bool showSaleOnly = false;
 
   // Pagination
-  static const int pageSize = 8;
+  static const int pageSize = 4;
   int currentPage = 0;
 
   final List<Collection> allCollections = [
@@ -38,57 +38,76 @@ class _CollectionsPageState extends State<CollectionsPage> {
       isSale: true,
     ),
     Collection(
-      title: 'Filler',
-      description: 'Filler',
-    ),
-    Collection(
-      title: 'Filler',
-      description: 'Filler Sale',
+      title: 'Sale filler 1',
+      description: 'Sale filler',
       isSale: true,
     ),
     Collection(
-      title: 'Filler',
-      description: 'Filler',
-    ),
-    Collection(
-      title: 'Filler',
-      description: 'Filler',
-    ),
-    Collection(
-      title: 'Filler',
-      description: 'Filler Sale',
+      title: 'Sale filler 2',
+      description: 'Sale filler',
       isSale: true,
     ),
     Collection(
-      title: 'Filler',
-      description: 'Filler',
-    ),
-    Collection(
-      title: 'Filler',
-      description: 'Filler Sale',
+      title: 'Sale filler 3',
+      description: 'Sale filler',
       isSale: true,
     ),
     Collection(
-      title: 'Filler',
-      description: 'Filler',
-    ),
-    Collection(
-      title: 'Filler',
-      description: 'Filler Sale',
+      title: 'Sale filler 4',
+      description: 'Sale filler',
       isSale: true,
     ),
     Collection(
-      title: 'Filler',
-      description: 'Filler',
-    ),
-    Collection(
-      title: 'Filler',
-      description: 'Filler',
-    ),
-    Collection(
-      title: 'Filler Sale',
-      description: 'Filler',
+      title: 'Sale filler 5',
+      description: 'Sale filler',
       isSale: true,
+    ),
+    Collection(
+      title: 'Sale filler 6',
+      description: 'Sale filler',
+      isSale: true,
+    ),
+    Collection(
+      title: 'Sale filler 7',
+      description: 'Sale filler',
+      isSale: true,
+    ),
+    Collection(
+      title: 'Sale filler 8',
+      description: 'Sale filler',
+      isSale: true,
+    ),
+    Collection(
+      title: 'Filler 1',
+      description: 'Sale filler',
+    ),
+    Collection(
+      title: 'Filler 2',
+      description: 'Sale filler',
+    ),
+    Collection(
+      title: 'Filler 3',
+      description: 'Sale filler',
+    ),
+    Collection(
+      title: 'Filler 4',
+      description: 'Sale filler',
+    ),
+    Collection(
+      title: 'Filler 5',
+      description: 'Sale filler',
+    ),
+    Collection(
+      title: 'Filler 6',
+      description: 'Sale filler',
+    ),
+    Collection(
+      title: 'Filler 7',
+      description: 'Sale filler',
+    ),
+    Collection(
+      title: 'Filler 8',
+      description: 'Sale filler',
     ),
   ];
 
@@ -96,13 +115,16 @@ class _CollectionsPageState extends State<CollectionsPage> {
     currentPage = 0;
   }
 
+  /// Apply filtering + sorting
   List<Collection> get processedCollections {
     List<Collection> collections = List.from(allCollections);
 
+    // Filter: show only sale collections when checked
     if (showSaleOnly) {
       collections = collections.where((c) => c.isSale).toList();
     }
 
+    // Sort
     if (sortOrder == 'A–Z') {
       collections.sort((a, b) => a.title.compareTo(b.title));
     } else {
@@ -112,7 +134,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
     return collections;
   }
 
-  /// PAGINATION
+  /// Apply pagination
   List<Collection> get paginatedCollections {
     final start = currentPage * pageSize;
     final end = start + pageSize;
@@ -133,6 +155,10 @@ class _CollectionsPageState extends State<CollectionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Collections'),
+        backgroundColor: const Color(0xFF4d2963),
+      ),
       body: Column(
         children: [
           // Controls
@@ -141,7 +167,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Sort dropdown
+                // Sort
                 Row(
                   children: [
                     const Text(
@@ -172,7 +198,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
                   ],
                 ),
 
-                // Filter checkbox (NO extra text)
+                // Filter
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Show sale collections only'),
@@ -188,7 +214,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
             ),
           ),
 
-          // Collection list
+          // Collections list
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -220,7 +246,11 @@ class _CollectionsPageState extends State<CollectionsPage> {
                           const SizedBox(height: 12),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, collection.isSale ? '/sale' : '/collection');
+                              if (collection.isSale) {
+                                Navigator.pushNamed(context, '/sale');
+                              } else {
+                                Navigator.pushNamed(context, '/collection');
+                              }
                             },
                             child: const Text('View Collection'),
                           ),
