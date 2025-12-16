@@ -35,6 +35,12 @@ class FooterSection extends StatelessWidget {
             child: const Text('About Us'),
           ),
           TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/auth');
+            },
+            child: const Text('Sign In'),
+          ),
+          TextButton(
             onPressed: () => _placeholderLink(context),
             child: const Text('Contact'),
           ),
