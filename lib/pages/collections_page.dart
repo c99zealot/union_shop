@@ -220,17 +220,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
                           const SizedBox(height: 12),
                           TextButton(
                             onPressed: () {
-                              if (collection.isSale) {
-                                Navigator.pushNamed(context, '/sale');
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Collection page not implemented yet',
-                                    ),
-                                  ),
-                                );
-                              }
+                              Navigator.pushNamed(context, collection.isSale ? '/sale' : '/collection');
                             },
                             child: const Text('View Collection'),
                           ),
