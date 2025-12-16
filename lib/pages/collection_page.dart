@@ -20,11 +20,11 @@ class _CollectionPageState extends State<CollectionPage> {
   int currentPage = 0;
 
   final List<Product> allProducts = [
-    Product(title: 'Purple Hoodie', price: 35.0, isOnSale: true),
-    Product(title: 'University T-Shirt', price: 20.0),
-    Product(title: 'Campus Tote Bag', price: 12.0),
-    Product(title: 'Logo Mug', price: 8.0, isOnSale: true),
-    Product(title: 'Sticker Pack', price: 3.0),
+    Product(title: 'Purple Hoodie', basePrice: 35.0, isOnSale: true),
+    Product(title: 'University T-Shirt', basePrice: 20.0),
+    Product(title: 'Campus Tote Bag', basePrice: 12.0),
+    Product(title: 'Logo Mug', basePrice: 8.0, isOnSale: true),
+    Product(title: 'Sticker Pack', basePrice: 3.0),
   ];
 
   void resetPagination() {
@@ -43,10 +43,10 @@ class _CollectionPageState extends State<CollectionPage> {
     // Sort
     switch (sortOrder) {
       case 'Price: Low → High':
-        products.sort((a, b) => a.price.compareTo(b.price));
+        products.sort((a, b) => a.basePrice.compareTo(b.basePrice));
         break;
       case 'Price: High → Low':
-        products.sort((a, b) => b.price.compareTo(a.price));
+        products.sort((a, b) => b.basePrice.compareTo(a.basePrice));
         break;
       case 'A–Z':
       default:
@@ -189,7 +189,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '£${product.price.toStringAsFixed(2)}',
+                                  '£${product.basePrice.toStringAsFixed(2)}',
                                 ),
                                 if (product.isOnSale)
                                   const Padding(

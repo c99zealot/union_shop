@@ -1,21 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/models/product.dart';
+import 'package:provider/provider.dart';
+import '../services/cart_service.dart';
+import '../models/cart_item.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
+
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  // Example product (model-driven)
+  final Product product = Product(
+    title: 'Purple Hoodie',
+    basePrice: 35.00,
+    isOnSale: true,
+  );
+
+  // State
+  String selectedSize = 'M';
+  int quantity = 1;
+
+  // Size price modifiers
+  final Map<String, double> sizeModifiers = {
+    'S': 0.0,
+    'M': 0.0,
+    'L': 2.0,
+    'XL': 4.0,
+  };
+
+  double get unitPrice =>
+      product.basePrice + (sizeModifiers[selectedSize] ?? 0.0);
+
+  double get totalPrice => unitPrice * quantity;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Purple Hoodie'),
+        title: Text(product.title),
         backgroundColor: const Color(0xFF4d2963),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Product image
+          // Image placeholder
           Container(
-            height: 250,
+            height: 260,
             decoration: BoxDecoration(
               color: Colors.grey[300],
               borderRadius: BorderRadius.circular(12),
@@ -30,10 +63,10 @@ class ProductPage extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          // Product title
-          const Text(
-            'Purple Hoodie',
-            style: TextStyle(
+          // Title
+          Text(
+            product.title,
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
@@ -41,80 +74,117 @@ class ProductPage extends StatelessWidget {
 
           const SizedBox(height: 8),
 
-          // Price
-          const Text(
-            '£35.00',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.black87,
+          // Sale badge
+          if (product.isOnSale)
+            const Text(
+              'On Sale',
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
 
           const SizedBox(height: 16),
 
-          // Description
-          const Text(
-            'A comfortable purple hoodie featuring the word "Portsmouth". '
-            'Perfect for everyday wear and official university events.',
-            style: TextStyle(fontSize: 16),
+          // Unit price
+          Text(
+            '£${unitPrice.toStringAsFixed(2)} per item',
+            style: const TextStyle(fontSize: 18),
           ),
 
           const SizedBox(height: 24),
 
-          // Size selector (dummy)
+          // Size selector
           const Text(
             'Size',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
-            items: const [
-              DropdownMenuItem(value: 'S', child: Text('Small')),
-              DropdownMenuItem(value: 'M', child: Text('Medium')),
-              DropdownMenuItem(value: 'L', child: Text('Large')),
-              DropdownMenuItem(value: 'XL', child: Text('Extra Large')),
-            ],
-            onChanged: (value) {},
+            value: selectedSize,
+            items: sizeModifiers.keys
+                .map(
+                  (size) => DropdownMenuItem(
+                    value: size,
+                    child: Text(size),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() {
+                selectedSize = value;
+              });
+            },
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Select size',
             ),
           ),
 
           const SizedBox(height: 24),
 
-          // Quantity selector (dummy)
+          // Quantity selector
           const Text(
             'Quantity',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          DropdownButtonFormField<int>(
-            items: List.generate(
-              5,
-              (index) => DropdownMenuItem(
-                value: index + 1,
-                child: Text('${index + 1}'),
+          Row(
+            children: [
+              IconButton(
+                onPressed: quantity > 1
+                    ? () {
+                        setState(() {
+                          quantity--;
+                        });
+                      }
+                    : null,
+                icon: const Icon(Icons.remove),
               ),
-            ),
-            onChanged: (value) {},
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Select quantity',
+              Text(
+                quantity.toString(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    quantity++;
+                  });
+                },
+                icon: const Icon(Icons.add),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          // Total price
+          Text(
+            'Total: £${totalPrice.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
 
           const SizedBox(height: 32),
 
-          // Add to cart button (dummy)
+          // Add to cart
           ElevatedButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Add to cart not implemented yet'),
+              Provider.of<CartService>(context, listen: false).addItem(
+                CartItem(
+                  product: product,
+                  size: selectedSize,
+                  quantity: quantity,
                 ),
               );
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Added to cart')),
+              );
             },
+
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF4d2963),
               padding: const EdgeInsets.symmetric(vertical: 16),

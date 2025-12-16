@@ -71,6 +71,12 @@ class HeaderSection extends StatelessWidget {
                     },
                     child: const Text('Sign In'),
                   ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/cart');
+                    },
+                    child: const Text('View cart'),
+                  ),
                 ],
 
                 const Spacer(),

@@ -4,8 +4,12 @@ import 'pages/about_us_page.dart';
 import 'pages/home_page.dart';
 import 'pages/collections_page.dart';
 import 'pages/collection_page.dart';
+import 'pages/cart_page.dart';
 import 'pages/sale_collection_page.dart';
 import 'pages/auth_page.dart';
+import 'package:provider/provider.dart';
+import 'services/cart_service.dart';
+
 
 void main() {
   runApp(const UnionShopApp());
@@ -16,24 +20,28 @@ class UnionShopApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Union Shop',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4d2963)),
-      ),
-      home: const HomePage(),
-      initialRoute: '/',
-      routes: {
-        '/product': (context) => const ProductPage(),
-        '/about': (context) => const AboutUsPage(),
-        '/collections': (context) => const CollectionsPage(),
-        '/collection': (context) => const CollectionPage(),
-        '/sale': (context) => const SaleCollectionPage(),
-        '/auth': (context) => const AuthPage(),
-        '/home': (context) => const HomePage(),
-      },
-    );
+    return ChangeNotifierProvider(
+        create: (_) => CartService(),
+        child: MaterialApp(
+          title: 'Union Shop',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme:
+                ColorScheme.fromSeed(seedColor: const Color(0xFF4d2963)),
+          ),
+          home: const HomePage(),
+          initialRoute: '/',
+          routes: {
+            '/product': (context) => const ProductPage(),
+            '/about': (context) => const AboutUsPage(),
+            '/collections': (context) => const CollectionsPage(),
+            '/collection': (context) => const CollectionPage(),
+            '/sale': (context) => const SaleCollectionPage(),
+            '/auth': (context) => const AuthPage(),
+            '/home': (context) => const HomePage(),
+            '/cart': (context) => const CartPage(),
+          },
+        ));
   }
 }
 
