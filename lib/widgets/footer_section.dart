@@ -52,7 +52,12 @@ class FooterSection extends StatelessWidget {
             },
             child: const Text('Collections'),
           ),
-
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/sale');
+            },
+            child: const Text('Sale'),
+          ),
 
           const SizedBox(height: 16),
           const Divider(),

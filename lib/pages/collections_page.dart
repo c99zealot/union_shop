@@ -63,7 +63,11 @@ class CollectionsPage extends StatelessWidget {
                     const SizedBox(height: 12),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/collection');
+                        if (collection['title'] == 'Sale Items') {
+                          Navigator.pushNamed(context, '/sale');
+                        } else {
+                          Navigator.pushNamed(context, '/collection');
+                        }
                       },
                       child: const Text('View Collection'),
                     ),
