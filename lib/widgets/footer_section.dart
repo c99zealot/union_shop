@@ -35,12 +35,6 @@ class FooterSection extends StatelessWidget {
             child: const Text('About Us'),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/auth');
-            },
-            child: const Text('Sign In'),
-          ),
-          TextButton(
             onPressed: () => _placeholderLink(context),
             child: const Text('Contact'),
           ),
@@ -51,18 +45,6 @@ class FooterSection extends StatelessWidget {
           TextButton(
             onPressed: () => _placeholderLink(context),
             child: const Text('Terms & Conditions'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/collections');
-            },
-            child: const Text('Collections'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/sale');
-            },
-            child: const Text('Sale'),
           ),
 
           const SizedBox(height: 16),
