@@ -12,7 +12,6 @@ class CartItem {
   });
 
   double get unitPrice {
-    // Must match product page logic
     const sizeModifiers = {
       'S': 0.0,
       'M': 0.0,

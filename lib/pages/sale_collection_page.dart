@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/models/product.dart';
 
 class SaleCollectionPage extends StatelessWidget {
   const SaleCollectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final saleProducts = [
-      {
-        'title': 'Purple Hoodie',
-        'originalPrice': '£45.00',
-        'salePrice': '£35.00',
-      },
-      {
-        'title': 'University T-Shirt',
-        'originalPrice': '£25.00',
-        'salePrice': '£18.00',
-      },
-      {
-        'title': 'Logo Mug',
-        'originalPrice': '£12.00',
-        'salePrice': '£8.00',
-      },
+    final List<Product> saleProducts = [
+      Product(
+        title: 'Purple Hoodie',
+        basePrice: 35.00,
+        isOnSale: true,
+        imagePath: 'images/portsmouth_hoodie.png',
+      ),
+      Product(
+        title: 'University T-Shirt',
+        basePrice: 18.00,
+        isOnSale: true,
+        imagePath: 'images/portsmouth_tshirt.png',
+      ),
+      Product(
+        title: 'University Mug',
+        basePrice: 8.00,
+        isOnSale: true,
+        imagePath: 'images/portsmouth_mug.png',
+      ),
     ];
+
+    final Map<String, double> originalPrices = {
+      'Purple Hoodie': 45.00,
+      'University T-Shirt': 25.00,
+      'University Mug': 12.00,
+    };
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +41,6 @@ class SaleCollectionPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Promotional banner
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
@@ -61,8 +70,10 @@ class SaleCollectionPage extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          // Sale products
           ...saleProducts.map((product) {
+            final originalPrice =
+                originalPrices[product.title] ?? product.basePrice;
+
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Card(
@@ -75,27 +86,35 @@ class SaleCollectionPage extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.local_offer,
-                          color: Colors.grey,
-                          size: 40,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          product.imagePath,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) {
+                            return Container(
+                              width: 80,
+                              height: 80,
+                              color: Colors.grey[300],
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.image_not_supported,
+                                color: Colors.grey,
+                              ),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),
+
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              product['title']!,
+                              product.title,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -103,7 +122,7 @@ class SaleCollectionPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              product['originalPrice']!,
+                              '£${originalPrice.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -111,7 +130,7 @@ class SaleCollectionPage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              product['salePrice']!,
+                              '£${product.basePrice.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -121,11 +140,10 @@ class SaleCollectionPage extends StatelessWidget {
                             const SizedBox(height: 8),
                             TextButton(
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        'Sale product page not implemented yet'),
-                                  ),
+                                Navigator.pushNamed(
+                                  context,
+                                  '/product',
+                                  arguments: product,
                                 );
                               },
                               child: const Text('View Product'),

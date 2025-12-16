@@ -9,13 +9,10 @@ class CollectionsPage extends StatefulWidget {
 }
 
 class _CollectionsPageState extends State<CollectionsPage> {
-  // Sorting
-  String sortOrder = 'A–Z';
+  String sortOrder = 'A-Z';
 
-  // Filtering
   bool showSaleOnly = false;
 
-  // Pagination
   static const int pageSize = 4;
   int currentPage = 0;
 
@@ -115,17 +112,14 @@ class _CollectionsPageState extends State<CollectionsPage> {
     currentPage = 0;
   }
 
-  /// Apply filtering + sorting
   List<Collection> get processedCollections {
     List<Collection> collections = List.from(allCollections);
 
-    // Filter: show only sale collections when checked
     if (showSaleOnly) {
       collections = collections.where((c) => c.isSale).toList();
     }
 
-    // Sort
-    if (sortOrder == 'A–Z') {
+    if (sortOrder == 'A-Z') {
       collections.sort((a, b) => a.title.compareTo(b.title));
     } else {
       collections.sort((a, b) => b.title.compareTo(a.title));
@@ -134,7 +128,6 @@ class _CollectionsPageState extends State<CollectionsPage> {
     return collections;
   }
 
-  /// Apply pagination
   List<Collection> get paginatedCollections {
     final start = currentPage * pageSize;
     final end = start + pageSize;
@@ -161,13 +154,11 @@ class _CollectionsPageState extends State<CollectionsPage> {
       ),
       body: Column(
         children: [
-          // Controls
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Sort
                 Row(
                   children: [
                     const Text(
@@ -179,12 +170,12 @@ class _CollectionsPageState extends State<CollectionsPage> {
                       value: sortOrder,
                       items: const [
                         DropdownMenuItem(
-                          value: 'A–Z',
-                          child: Text('A–Z'),
+                          value: 'A-Z',
+                          child: Text('A-Z'),
                         ),
                         DropdownMenuItem(
-                          value: 'Z–A',
-                          child: Text('Z–A'),
+                          value: 'Z-A',
+                          child: Text('Z-A'),
                         ),
                       ],
                       onChanged: (value) {
@@ -198,7 +189,6 @@ class _CollectionsPageState extends State<CollectionsPage> {
                   ],
                 ),
 
-                // Filter
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Show sale collections only'),
@@ -214,7 +204,6 @@ class _CollectionsPageState extends State<CollectionsPage> {
             ),
           ),
 
-          // Collections list
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -263,7 +252,6 @@ class _CollectionsPageState extends State<CollectionsPage> {
             ),
           ),
 
-          // Pagination controls
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:union_shop/models/product.dart';
 import 'package:provider/provider.dart';
-import '../services/cart_service.dart';
-import '../models/cart_item.dart';
+import 'package:union_shop/models/product.dart';
+import 'package:union_shop/models/cart_item.dart';
+import 'package:union_shop/services/cart_service.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -12,18 +12,11 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  // Example product (model-driven)
-  final Product product = Product(
-    title: 'Purple Hoodie',
-    basePrice: 35.00,
-    isOnSale: true,
-  );
+  late Product product;
 
-  // State
   String selectedSize = 'M';
   int quantity = 1;
 
-  // Size price modifiers
   final Map<String, double> sizeModifiers = {
     'S': 0.0,
     'M': 0.0,
@@ -37,6 +30,14 @@ class _ProductPageState extends State<ProductPage> {
   double get totalPrice => unitPrice * quantity;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    product =
+        ModalRoute.of(context)!.settings.arguments as Product;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -46,24 +47,29 @@ class _ProductPageState extends State<ProductPage> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Image placeholder
-          Container(
-            height: 260,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            alignment: Alignment.center,
-            child: const Icon(
-              Icons.image,
-              size: 80,
-              color: Colors.grey,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              product.imagePath,
+              height: 260,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) {
+                return Container(
+                  height: 260,
+                  color: Colors.grey[300],
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.image_not_supported,
+                    size: 80,
+                  ),
+                );
+              },
             ),
           ),
 
           const SizedBox(height: 24),
 
-          // Title
           Text(
             product.title,
             style: const TextStyle(
@@ -74,7 +80,6 @@ class _ProductPageState extends State<ProductPage> {
 
           const SizedBox(height: 8),
 
-          // Sale badge
           if (product.isOnSale)
             const Text(
               'On Sale',
@@ -86,7 +91,6 @@ class _ProductPageState extends State<ProductPage> {
 
           const SizedBox(height: 16),
 
-          // Unit price
           Text(
             '£${unitPrice.toStringAsFixed(2)} per item',
             style: const TextStyle(fontSize: 18),
@@ -94,14 +98,13 @@ class _ProductPageState extends State<ProductPage> {
 
           const SizedBox(height: 24),
 
-          // Size selector
           const Text(
             'Size',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
-            value: selectedSize,
+            initialValue: selectedSize,
             items: sizeModifiers.keys
                 .map(
                   (size) => DropdownMenuItem(
@@ -123,7 +126,6 @@ class _ProductPageState extends State<ProductPage> {
 
           const SizedBox(height: 24),
 
-          // Quantity selector
           const Text(
             'Quantity',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -158,7 +160,6 @@ class _ProductPageState extends State<ProductPage> {
 
           const SizedBox(height: 24),
 
-          // Total price
           Text(
             'Total: £${totalPrice.toStringAsFixed(2)}',
             style: const TextStyle(
@@ -169,7 +170,6 @@ class _ProductPageState extends State<ProductPage> {
 
           const SizedBox(height: 32),
 
-          // Add to cart
           ElevatedButton(
             onPressed: () {
               Provider.of<CartService>(context, listen: false).addItem(
@@ -181,10 +181,11 @@ class _ProductPageState extends State<ProductPage> {
               );
 
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Added to cart')),
+                const SnackBar(
+                  content: Text('Added to cart'),
+                ),
               );
             },
-
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF4d2963),
               padding: const EdgeInsets.symmetric(vertical: 16),

@@ -35,7 +35,6 @@ class _AuthPageState extends State<AuthPage> {
 
           const SizedBox(height: 24),
 
-          // Email
           const TextField(
             decoration: InputDecoration(
               labelText: 'Email',
@@ -45,7 +44,6 @@ class _AuthPageState extends State<AuthPage> {
 
           const SizedBox(height: 16),
 
-          // Password
           const TextField(
             obscureText: true,
             decoration: InputDecoration(
@@ -56,7 +54,6 @@ class _AuthPageState extends State<AuthPage> {
 
           const SizedBox(height: 24),
 
-          // Sign in button
           ElevatedButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -76,7 +73,6 @@ class _AuthPageState extends State<AuthPage> {
           const Divider(),
           const SizedBox(height: 24),
 
-          // Sign up section header
           const Text(
             'New here?',
             style: TextStyle(
@@ -102,7 +98,6 @@ class _AuthPageState extends State<AuthPage> {
               child: const Text('Create Account'),
             ),
 
-          // Sign-up form (expanded)
           if (showSignUpForm) ...[
             const SizedBox(height: 24),
 

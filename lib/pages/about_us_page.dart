@@ -16,7 +16,7 @@ class AboutUsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'University of Portsmouth Students’ Union',
+              "University of Portsmouth Students' Union",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,

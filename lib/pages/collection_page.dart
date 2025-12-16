@@ -9,46 +9,40 @@ class CollectionPage extends StatefulWidget {
 }
 
 class _CollectionPageState extends State<CollectionPage> {
-  // Sorting
-  String sortOrder = 'A–Z';
+  String sortOrder = 'A-Z';
 
-  // Filtering
   bool showSaleOnly = false;
 
-  // Pagination
   static const int pageSize = 3;
   int currentPage = 0;
 
   final List<Product> allProducts = [
-    Product(title: 'Purple Hoodie', basePrice: 35.0, isOnSale: true),
-    Product(title: 'University T-Shirt', basePrice: 20.0),
-    Product(title: 'Campus Tote Bag', basePrice: 12.0),
-    Product(title: 'Logo Mug', basePrice: 8.0, isOnSale: true),
-    Product(title: 'Sticker Pack', basePrice: 3.0),
+    Product(title: 'Purple Hoodie', basePrice: 35.0, imagePath: 'images/portsmouth_hoodie.png', isOnSale: true),
+    Product(title: 'University T-Shirt', imagePath: 'images/portsmouth_tshirt.png', basePrice: 20.0),
+    Product(title: 'Campus Tote Bag', imagePath: 'images/portsmouth_tote_bag.png', basePrice: 12.0),
+    Product(title: 'Logo Mug', imagePath: 'images/portsmouth_mug.png', basePrice: 8.0, isOnSale: true),
+    Product(title: 'Sticker Pack', imagePath: 'images/portsmouth_sticker_pack.png', basePrice: 3.0),
   ];
 
   void resetPagination() {
     currentPage = 0;
   }
 
-  /// FILTER + SORT
   List<Product> get processedProducts {
     List<Product> products = List.from(allProducts);
 
-    // Filter: sale only when checked
     if (showSaleOnly) {
       products = products.where((p) => p.isOnSale).toList();
     }
 
-    // Sort
     switch (sortOrder) {
-      case 'Price: Low → High':
+      case 'Price: Low to High':
         products.sort((a, b) => a.basePrice.compareTo(b.basePrice));
         break;
-      case 'Price: High → Low':
+      case 'Price: High to Low':
         products.sort((a, b) => b.basePrice.compareTo(a.basePrice));
         break;
-      case 'A–Z':
+      case 'A-Z':
       default:
         products.sort((a, b) => a.title.compareTo(b.title));
     }
@@ -56,7 +50,6 @@ class _CollectionPageState extends State<CollectionPage> {
     return products;
   }
 
-  /// PAGINATION
   List<Product> get paginatedProducts {
     final start = currentPage * pageSize;
     final end = start + pageSize;
@@ -83,13 +76,11 @@ class _CollectionPageState extends State<CollectionPage> {
       ),
       body: Column(
         children: [
-          // Controls
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Sort
                 Row(
                   children: [
                     const Text(
@@ -101,16 +92,16 @@ class _CollectionPageState extends State<CollectionPage> {
                       value: sortOrder,
                       items: const [
                         DropdownMenuItem(
-                          value: 'A–Z',
-                          child: Text('A–Z'),
+                          value: 'A-Z',
+                          child: Text('A-Z'),
                         ),
                         DropdownMenuItem(
-                          value: 'Price: Low → High',
-                          child: Text('Price: Low → High'),
+                          value: 'Price: Low to High',
+                          child: Text('Price: Low to High'),
                         ),
                         DropdownMenuItem(
-                          value: 'Price: High → Low',
-                          child: Text('Price: High → Low'),
+                          value: 'Price: High to Low',
+                          child: Text('Price: High to Low'),
                         ),
                       ],
                       onChanged: (value) {
@@ -124,7 +115,6 @@ class _CollectionPageState extends State<CollectionPage> {
                   ],
                 ),
 
-                // Filter
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Show sale products only'),
@@ -140,7 +130,6 @@ class _CollectionPageState extends State<CollectionPage> {
             ),
           ),
 
-          // Product list
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -160,19 +149,22 @@ class _CollectionPageState extends State<CollectionPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Image placeholder
-                          Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            alignment: Alignment.center,
-                            child: const Icon(
-                              Icons.image,
-                              color: Colors.grey,
-                              size: 40,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              product.imagePath,
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) {
+                                return Container(
+                                  width: 80,
+                                  height: 80,
+                                  color: Colors.grey[300],
+                                  alignment: Alignment.center,
+                                  child: const Icon(Icons.image_not_supported),
+                                );
+                              },
                             ),
                           ),
                           const SizedBox(width: 16),
@@ -205,7 +197,11 @@ class _CollectionPageState extends State<CollectionPage> {
                                 const SizedBox(height: 8),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/product');
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/product',
+                                      arguments: product,
+                                    );
                                   },
                                   child: const Text('View Product'),
                                 ),
@@ -221,7 +217,6 @@ class _CollectionPageState extends State<CollectionPage> {
             ),
           ),
 
-          // Pagination controls
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(

@@ -13,28 +13,17 @@ class HeaderSection extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          // Top announcement bar
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 8),
             color: const Color(0xFF4d2963),
-            child: const Text(
-              'Lorem Ipsum',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
           ),
 
-          // Main header row
           Container(
             height: 64,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                // Logo
                 Image.asset(
                   'images/union_logo.png',
                   height: 32,
@@ -45,7 +34,6 @@ class HeaderSection extends StatelessWidget {
 
                 const SizedBox(width: 24),
 
-                // Desktop navigation links
                 if (isDesktop) ...[
                   TextButton(
                     onPressed: () {
@@ -81,7 +69,6 @@ class HeaderSection extends StatelessWidget {
 
                 const Spacer(),
 
-                // Mobile icons + menu
                 if (!isDesktop) ...[
                   IconButton(
                     icon: const Icon(Icons.search, size: 20),

@@ -7,7 +7,6 @@ class CartService extends ChangeNotifier {
   List<CartItem> get items => List.unmodifiable(_items);
 
   void addItem(CartItem item) {
-    // Merge identical items
     final existing = _items.where(
       (i) =>
           i.product.title == item.product.title &&

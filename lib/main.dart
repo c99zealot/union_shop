@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:union_shop/product_page.dart';
+import 'package:union_shop/pages/product_page.dart';
 import 'pages/about_us_page.dart';
 import 'pages/home_page.dart';
 import 'pages/collections_page.dart';

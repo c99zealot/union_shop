@@ -46,9 +46,9 @@ class HeroSection extends StatelessWidget {
             left: 24,
             right: 24,
             child: Column(
-              children: const [
+              children: [
                 Text(
-                  'Placeholder Hero Title',
+                  'Welcome to The Union Shop!',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -57,7 +57,7 @@ class HeroSection extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  'This is placeholder text for the hero section.',
+                  "UoP Students' Union Shop",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
